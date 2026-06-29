@@ -13,8 +13,18 @@ fi
 
 # Check cmd is authenticated
 if ! cmd status &> /dev/null 2>&1; then
-    echo "cmd not authenticated. Running 'cmd auth login'..."
-    cmd auth login
+    echo "cmd not authenticated."
+    echo "Running 'cmd login' to authenticate with your model provider..."
+    echo "(This opens a browser for OAuth - log in with your account)"
+    echo ""
+    cmd login
+    echo ""
+    # Verify it worked
+    if ! cmd status &> /dev/null 2>&1; then
+        echo "Error: Authentication failed. Try running 'cmd login' manually."
+        exit 1
+    fi
+    echo "cmd authenticated successfully!"
 fi
 
 # Check Go is installed
