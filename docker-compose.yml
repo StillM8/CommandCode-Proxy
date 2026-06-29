@@ -1,0 +1,11 @@
+services:
+  proxy:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - PROXY_API_KEY=${PROXY_API_KEY}
+      - PORT=8080
+      - MAX_CONCURRENT=4
+      - REQUEST_TIMEOUT_SEC=300
+    restart: unless-stopped

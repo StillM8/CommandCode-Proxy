@@ -20,27 +20,48 @@ OpenAI-compatible API proxy for [CommandCode CLI](https://github.com/nicholasgri
 
 ## Quick Start
 
+### Option 1: One-liner (recommended)
+
 ```bash
-# 1. Authenticate
-cmd auth login
-
-# 2. Build
-go build -o commandcode-proxy .
-
-# 3. Run
-export PROXY_API_KEY="your-secret-key"
-./commandcode-proxy
-
-# 4. Use
-curl http://localhost:8080/v1/chat/completions \
-  -H "Authorization: Bearer your-secret-key" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "claude-sonnet-4-6",
-    "messages": [{"role": "user", "content": "Hello!"}],
-    "stream": true
-  }'
+git clone https://github.com/StillM8/CommandCode-Proxy.git && cd CommandCode-Proxy && ./setup.sh
 ```
+
+This will:
+- Check `cmd` is installed and authenticated
+- Build the proxy
+- Generate a random API key
+- Create `.env` with defaults
+
+Then run it:
+```bash
+export PROXY_API_KEY=$(grep PROXY_API_KEY .env | cut -d= -f2) && ./commandcode-proxy
+```
+
+### Option 2: Docker
+
+```bash
+git clone https://github.com/StillM8/CommandCode-Proxy.git && cd CommandCode-Proxy
+export PROXY_API_KEY=$(openssl rand -hex 32)
+docker compose up -d
+```
+
+### Option 3: Manual
+
+```bash
+cmd auth login          # authenticate cmd
+go build -o . .         # build
+export PROXY_API_KEY="your-key"
+./commandcode-proxy
+```
+
+### Point your AI client to
+
+```
+Base URL: http://localhost:8080/v1
+API Key:  (the PROXY_API_KEY you set)
+```
+
+Works with any OpenAI-compatible client: opencode, Continue, Cursor, ChatBox, etc.
 
 ## Configuration
 
